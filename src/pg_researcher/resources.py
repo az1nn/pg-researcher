@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from importlib.resources import files
+import importlib.resources
 from pathlib import Path
 
 
@@ -33,5 +33,5 @@ def read_text_resource(relative_path: str, explicit_path: Path | None = None) ->
     if packaged_path is None:
         raise FileNotFoundError(f"No packaged resource mapping for {relative_path}")
 
-    resource = files("pg_researcher").joinpath(*packaged_path.split("/"))
+    resource = importlib.resources.files("pg_researcher").joinpath(*packaged_path.split("/"))
     return resource.read_text(encoding="utf-8")
