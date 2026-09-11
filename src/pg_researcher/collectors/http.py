@@ -9,7 +9,7 @@ from urllib.parse import urlsplit
 import httpx
 
 from pg_researcher.collectors.cache import FileCache
-from pg_researcher.collectors.normalize import canonicalize_url, validate_public_url
+from pg_researcher.collectors.normalize import validate_public_url
 from pg_researcher.collectors.policy import FetchPolicy, load_fetch_policy
 from pg_researcher.collectors.types import FetchSnapshot
 
@@ -99,7 +99,7 @@ class HttpFetcher:
                 if media_type and media_type not in self.policy.allowed_content_types:
                     raise FetchError(f"unsupported content type: {media_type}")
 
-                final_url = validate_public_url(canonicalize_url(str(response.url)))
+                final_url = validate_public_url(str(response.url))
                 snapshot = FetchSnapshot(
                     requested_url=target,
                     final_url=final_url,
