@@ -3,7 +3,6 @@ from __future__ import annotations
 import importlib.resources
 from pathlib import Path
 
-
 RESOURCE_MAP = {
     "config/sources.yaml": "resources/sources.yaml",
     "schemas/evidence.schema.json": "resources/evidence.schema.json",
