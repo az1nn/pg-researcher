@@ -24,3 +24,10 @@ jobs:
         run: ruff check .
       - name: Test
         run: pytest
+      - name: Build wheel
+        run: python -m build --wheel
+      - name: Verify packaged research resources
+        run: |
+          unzip -l dist/*.whl | grep 'pg_researcher/resources/sources.yaml'
+          unzip -l dist/*.whl | grep 'pg_researcher/resources/evidence.schema.json'
+          unzip -l dist/*.whl | grep 'pg_researcher/resources/research-report.schema.json'
