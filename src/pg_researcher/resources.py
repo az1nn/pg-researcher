@@ -4,6 +4,7 @@ import importlib.resources
 from pathlib import Path
 
 RESOURCE_MAP = {
+    "config/fetch-policy.yaml": "resources/fetch-policy.yaml",
     "config/sources.yaml": "resources/sources.yaml",
     "schemas/evidence.schema.json": "resources/evidence.schema.json",
     "schemas/research-report.schema.json": "resources/research-report.schema.json",

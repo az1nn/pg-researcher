@@ -39,18 +39,23 @@ python -m pip install -e '.[dev]'
 
 Requires Python 3.12+.
 
-## Executable core
+## CLI
 
 ```bash
 pg-researcher version
 pg-researcher sources validate
 pg-researcher sources list
-pg-researcher sources list --json
 pg-researcher evidence validate examples/evidence/minimal.json
 pg-researcher report validate examples/reports/minimal.json
+
+# Controlled public-source capture
+pg-researcher collect source x_princeguttreal --output data/evidence/x-profile.json
+pg-researcher collect source spotify_prince_gutt \
+  --url https://open.spotify.com/artist/... \
+  --output data/evidence/spotify-profile.json
 ```
 
-The executable core is intentionally offline. Network discovery/collectors are a separate layer so registry and artifact validation remain deterministic and testable.
+Collectors normalize provenance into typed evidence; they do not synthesize claims. Live collection is policy-controlled and locally cached. CI remains fully offline.
 
 ## Repository map
 
@@ -59,9 +64,11 @@ The executable core is intentionally offline. Network discovery/collectors are a
 ├── .github/workflows/ci.yml
 ├── SKILL.md
 ├── config/
+│   ├── fetch-policy.yaml
 │   └── sources.yaml
 ├── docs/
 │   ├── ARCHITECTURE.md
+│   ├── COLLECTORS.md
 │   ├── RESEARCH_POLICY.md
 │   └── RIGHTS_AND_ASSETS.md
 ├── examples/
@@ -72,7 +79,8 @@ The executable core is intentionally offline. Network discovery/collectors are a
 │   └── research-report.schema.json
 ├── specs/
 │   ├── 001-foundation.md
-│   └── 002-executable-core.md
+│   ├── 002-executable-core.md
+│   └── 003-collectors.md
 ├── src/pg_researcher/
 └── tests/
 ```
@@ -82,13 +90,14 @@ The executable core is intentionally offline. Network discovery/collectors are a
 ```bash
 ruff check .
 pytest
+python -m build --wheel
 ```
 
 ## Roadmap
 
 1. **Foundation** — evidence doctrine, source hierarchy, rights/provenance, schemas. ✅
 2. **Executable core** — typed models, registry loader, validation CLI and CI. ✅
-3. **Collectors** — controlled web/DSP/social adapters with caching and policy-aware fetch behavior.
+3. **Collectors** — controlled web/DSP/social acquisition, cache and fetch policy. ✅
 4. **Knowledge index** — claims, dedupe, conflicts, catalog/timeline indexes.
 5. **Reporting** — briefs, source ledger and editorial-opportunity synthesis.
 6. **Assets** — provenance manifest, authorized acquisition/derivatives and publication gates.
