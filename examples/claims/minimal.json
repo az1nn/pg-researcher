@@ -1,0 +1,16 @@
+{
+  "claim_id": "pgc_official_x_identity",
+  "subject": "Prince' Gutt",
+  "predicate": "official_x_account",
+  "value": "@princeguttreal",
+  "epistemic_class": "fact",
+  "confidence": "high",
+  "status": "open",
+  "evidence_ids": ["pge_official_profile_seed"],
+  "contradicting_evidence_ids": [],
+  "effective_at": null,
+  "effective_until": null,
+  "domain": "identity",
+  "entity_id": "prince_gutt",
+  "notes": "Seed claim for deterministic knowledge-index tests."
+}

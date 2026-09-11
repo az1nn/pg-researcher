@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pg-researcher.local/schemas/knowledge-index.schema.json",
+  "title": "PG Knowledge Index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "generated_at", "evidence_count", "canonical_evidence_count", "claim_count", "evidence_aliases", "dedup_groups", "conflicts", "timeline", "catalog", "claims"],
+  "properties": {
+    "version": {"type": "integer", "minimum": 1},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "evidence_count": {"type": "integer", "minimum": 0},
+    "canonical_evidence_count": {"type": "integer", "minimum": 0},
+    "claim_count": {"type": "integer", "minimum": 0},
+    "evidence_aliases": {"type": "object", "additionalProperties": {"type": "string"}},
+    "dedup_groups": {"type": "array", "items": {"type": "object"}},
+    "conflicts": {"type": "array", "items": {"type": "object"}},
+    "timeline": {"type": "array", "items": {"type": "object"}},
+    "catalog": {"type": "array", "items": {"type": "object"}},
+    "claims": {"type": "array", "items": {"$ref": "claim.schema.json"}}
+  }
+}
