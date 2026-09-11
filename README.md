@@ -46,16 +46,21 @@ pg-researcher version
 pg-researcher sources validate
 pg-researcher sources list
 pg-researcher evidence validate examples/evidence/minimal.json
+pg-researcher claim validate examples/claims/minimal.json
 pg-researcher report validate examples/reports/minimal.json
 
 # Controlled public-source capture
 pg-researcher collect source x_princeguttreal --output data/evidence/x-profile.json
-pg-researcher collect source spotify_prince_gutt \
-  --url https://open.spotify.com/artist/... \
-  --output data/evidence/spotify-profile.json
+
+# Deterministic knowledge index
+pg-researcher knowledge build \
+  --evidence-dir examples/evidence \
+  --claims-dir examples/claims \
+  --output data/index/knowledge.json
+pg-researcher knowledge inspect data/index/knowledge.json
 ```
 
-Collectors normalize provenance into typed evidence; they do not synthesize claims. Live collection is policy-controlled and locally cached. CI remains fully offline.
+Collectors normalize provenance into typed evidence; they do not synthesize claims. Claims are explicit artifacts. The knowledge index canonicalizes duplicate evidence, preserves conflicts and projects timeline/catalog views without silently deciding which conflicting value is true.
 
 ## Repository map
 
@@ -69,18 +74,23 @@ Collectors normalize provenance into typed evidence; they do not synthesize clai
 ├── docs/
 │   ├── ARCHITECTURE.md
 │   ├── COLLECTORS.md
+│   ├── KNOWLEDGE_INDEX.md
 │   ├── RESEARCH_POLICY.md
 │   └── RIGHTS_AND_ASSETS.md
 ├── examples/
+│   ├── claims/minimal.json
 │   ├── evidence/minimal.json
 │   └── reports/minimal.json
 ├── schemas/
+│   ├── claim.schema.json
 │   ├── evidence.schema.json
+│   ├── knowledge-index.schema.json
 │   └── research-report.schema.json
 ├── specs/
 │   ├── 001-foundation.md
 │   ├── 002-executable-core.md
-│   └── 003-collectors.md
+│   ├── 003-collectors.md
+│   └── 004-knowledge-index.md
 ├── src/pg_researcher/
 └── tests/
 ```
@@ -98,6 +108,6 @@ python -m build --wheel
 1. **Foundation** — evidence doctrine, source hierarchy, rights/provenance, schemas. ✅
 2. **Executable core** — typed models, registry loader, validation CLI and CI. ✅
 3. **Collectors** — controlled web/DSP/social acquisition, cache and fetch policy. ✅
-4. **Knowledge index** — claims, dedupe, conflicts, catalog/timeline indexes.
+4. **Knowledge index** — explicit claims, evidence dedupe, conflicts, catalog/timeline indexes. ✅
 5. **Reporting** — briefs, source ledger and editorial-opportunity synthesis.
 6. **Assets** — provenance manifest, authorized acquisition/derivatives and publication gates.
