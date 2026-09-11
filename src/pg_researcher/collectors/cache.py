@@ -40,7 +40,7 @@ class FileCache:
                 captured_at=captured_at,
                 from_cache=True,
             )
-        except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError):
+        except (OSError, KeyError, TypeError, ValueError):
             return None
 
     def put(self, key_url: str, snapshot: FetchSnapshot) -> None:
