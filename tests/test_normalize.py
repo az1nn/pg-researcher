@@ -1,6 +1,11 @@
 import pytest
 
-from pg_researcher.collectors.normalize import UnsafeUrlError, canonicalize_url, parse_html, validate_public_url
+from pg_researcher.collectors.normalize import (
+    UnsafeUrlError,
+    canonicalize_url,
+    parse_html,
+    validate_public_url,
+)
 
 
 def test_canonicalize_url_removes_trackers_and_sorts_query() -> None:

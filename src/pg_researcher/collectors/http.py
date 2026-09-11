@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import time
 from collections.abc import Callable
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from email.utils import parsedate_to_datetime
 from urllib.parse import urlsplit
 
@@ -34,7 +34,7 @@ class HttpFetcher:
         self.client = client or httpx.Client(follow_redirects=True)
         self.sleeper = sleeper
         self.monotonic = monotonic
-        self.now = now or (lambda: datetime.now(timezone.utc))
+        self.now = now or (lambda: datetime.now(UTC))
         self._last_request_by_host: dict[str, float] = {}
 
     def _respect_host_interval(self, url: str) -> None:
@@ -58,7 +58,7 @@ class HttpFetcher:
                     try:
                         retry_at = parsedate_to_datetime(value)
                         if retry_at.tzinfo is None:
-                            retry_at = retry_at.replace(tzinfo=timezone.utc)
+                            retry_at = retry_at.replace(tzinfo=UTC)
                         return max(0.0, (retry_at - self.now()).total_seconds())
                     except (TypeError, ValueError, OverflowError):
                         pass

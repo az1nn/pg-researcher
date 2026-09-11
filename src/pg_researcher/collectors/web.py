@@ -24,7 +24,7 @@ def _identity_status(value: str) -> Literal["verified", "probable", "unresolved"
 
 
 def _evidence_id(source_id: str, final_url: str, text: str) -> str:
-    material = f"{source_id}\n{final_url}\n{text}".encode("utf-8")
+    material = f"{source_id}\n{final_url}\n{text}".encode()
     digest = hashlib.sha256(material).hexdigest()[:24]
     return f"pge_{digest}"
 

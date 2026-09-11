@@ -96,7 +96,16 @@ class Evidence(StrictModel):
     captured_at: datetime
     published_at: datetime | None = None
     content_type: Literal[
-        "profile", "post", "article", "release", "track", "video", "image", "interview", "document", "other"
+        "profile",
+        "post",
+        "article",
+        "release",
+        "track",
+        "video",
+        "image",
+        "interview",
+        "document",
+        "other",
     ]
     observation: str
     excerpt: str | None = None

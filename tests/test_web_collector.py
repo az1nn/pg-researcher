@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import httpx
 
@@ -9,7 +9,7 @@ from pg_researcher.models import SourceClass, SourceConfig
 
 
 def test_web_collector_builds_stable_evidence() -> None:
-    now = datetime(2026, 9, 11, 18, 0, tzinfo=timezone.utc)
+    now = datetime(2026, 9, 11, 18, 0, tzinfo=UTC)
 
     def handler(request: httpx.Request) -> httpx.Response:
         return httpx.Response(

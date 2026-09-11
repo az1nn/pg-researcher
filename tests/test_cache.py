@@ -1,11 +1,11 @@
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from pg_researcher.collectors.cache import FileCache
 from pg_researcher.collectors.types import FetchSnapshot
 
 
 def test_file_cache_round_trip_and_expiry(tmp_path) -> None:
-    now = datetime(2026, 9, 11, 18, 0, tzinfo=timezone.utc)
+    now = datetime(2026, 9, 11, 18, 0, tzinfo=UTC)
     snapshot = FetchSnapshot(
         requested_url="https://example.com/",
         final_url="https://example.com/",

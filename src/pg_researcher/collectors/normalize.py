@@ -22,7 +22,8 @@ def canonicalize_url(url: str) -> str:
     scheme = parts.scheme.lower()
     host = (parts.hostname or "").lower()
     port = parts.port
-    if port is not None and not ((scheme == "http" and port == 80) or (scheme == "https" and port == 443)):
+    is_default_port = (scheme == "http" and port == 80) or (scheme == "https" and port == 443)
+    if port is not None and not is_default_port:
         host = f"{host}:{port}"
 
     clean_query = []

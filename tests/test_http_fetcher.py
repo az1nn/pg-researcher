@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import httpx
 
@@ -47,7 +47,7 @@ def test_fetcher_retries_429_and_respects_retry_after() -> None:
 
 def test_fetcher_uses_cache_without_second_request(tmp_path) -> None:
     calls = 0
-    now = datetime(2026, 9, 11, 18, 0, tzinfo=timezone.utc)
+    now = datetime(2026, 9, 11, 18, 0, tzinfo=UTC)
 
     def handler(request: httpx.Request) -> httpx.Response:
         nonlocal calls
