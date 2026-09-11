@@ -2,7 +2,7 @@
 
 Research skill and evidence pipeline for **Prince' Gutt**.
 
-The repository exists to turn public, authorized and verifiable information about Prince' Gutt into reusable research artifacts for the **PG Influencer RESEARCH** project. It is not a generic social-media scraper: every output must preserve provenance, distinguish fact from interpretation, and serve the artist's actual editorial universe.
+The repository turns public, authorized and verifiable information about Prince' Gutt into reusable research artifacts for **PG Influencer RESEARCH**. It is not a generic social-media scraper: every output must preserve provenance, distinguish fact from interpretation, and serve the artist's actual editorial universe.
 
 ## Core doctrine
 
@@ -29,10 +29,34 @@ Every material claim should carry:
 
 Official/first-party sources outrank aggregators. Conflicting claims are preserved and flagged instead of silently resolved.
 
+## Install for development
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -e '.[dev]'
+```
+
+Requires Python 3.12+.
+
+## Executable core
+
+```bash
+pg-researcher version
+pg-researcher sources validate
+pg-researcher sources list
+pg-researcher sources list --json
+pg-researcher evidence validate examples/evidence/minimal.json
+pg-researcher report validate examples/reports/minimal.json
+```
+
+The executable core is intentionally offline. Network discovery/collectors are a separate layer so registry and artifact validation remain deterministic and testable.
+
 ## Repository map
 
 ```text
 .
+├── .github/workflows/ci.yml
 ├── SKILL.md
 ├── config/
 │   └── sources.yaml
@@ -40,13 +64,31 @@ Official/first-party sources outrank aggregators. Conflicting claims are preserv
 │   ├── ARCHITECTURE.md
 │   ├── RESEARCH_POLICY.md
 │   └── RIGHTS_AND_ASSETS.md
+├── examples/
+│   ├── evidence/minimal.json
+│   └── reports/minimal.json
 ├── schemas/
 │   ├── evidence.schema.json
 │   └── research-report.schema.json
-└── specs/
-    └── 001-foundation.md
+├── specs/
+│   ├── 001-foundation.md
+│   └── 002-executable-core.md
+├── src/pg_researcher/
+└── tests/
 ```
 
-## Status
+## Development gates
 
-Foundation phase. The next implementation layer will add executable collectors, normalization, deduplication, claim/evidence indexing, report generation and validation tests.
+```bash
+ruff check .
+pytest
+```
+
+## Roadmap
+
+1. **Foundation** — evidence doctrine, source hierarchy, rights/provenance, schemas. ✅
+2. **Executable core** — typed models, registry loader, validation CLI and CI. ✅
+3. **Collectors** — controlled web/DSP/social adapters with caching and policy-aware fetch behavior.
+4. **Knowledge index** — claims, dedupe, conflicts, catalog/timeline indexes.
+5. **Reporting** — briefs, source ledger and editorial-opportunity synthesis.
+6. **Assets** — provenance manifest, authorized acquisition/derivatives and publication gates.

@@ -1,0 +1,17 @@
+{
+  "evidence_id": "pge_official_profile_seed",
+  "subject": "Prince' Gutt",
+  "source_id": "x_princeguttreal",
+  "source_class": "official",
+  "source_url": "https://x.com/princeguttreal",
+  "source_title": "Prince' Gutt official X profile",
+  "source_account": "princeguttreal",
+  "captured_at": "2026-09-11T18:00:00Z",
+  "published_at": null,
+  "content_type": "profile",
+  "observation": "The project-curated registry identifies @princeguttreal as an official Prince' Gutt account.",
+  "excerpt": null,
+  "identity_status": "verified",
+  "asset": null,
+  "notes": "Seed example for schema and CLI validation."
+}

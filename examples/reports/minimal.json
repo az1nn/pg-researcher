@@ -1,0 +1,21 @@
+{
+  "report_id": "pgr_foundation_example",
+  "topic": "Prince' Gutt source identity seed",
+  "generated_at": "2026-09-11T18:05:00Z",
+  "scope": "Executable-core example",
+  "findings": [
+    {
+      "finding_id": "finding_official_x",
+      "statement": "The project registry treats @princeguttreal on X as an official source.",
+      "epistemic_class": "fact",
+      "confidence": "high",
+      "evidence_ids": ["pge_official_profile_seed"],
+      "contradicting_evidence_ids": [],
+      "editorial_lenses": ["identity"]
+    }
+  ],
+  "conflicts": [],
+  "asset_candidates": [],
+  "open_questions": [],
+  "evidence_ids": ["pge_official_profile_seed"]
+}
