@@ -118,7 +118,10 @@ def _conflicts(claims: list[KnowledgeClaim]) -> tuple[list[ConflictGroup], set[s
                 conflict_id=conflict_id,
                 subject=ordered[0].subject,
                 predicate=ordered[0].predicate,
-                temporal_scope={"effective_at": scope[2] or None, "effective_until": scope[3] or None},
+                temporal_scope={
+                    "effective_at": scope[2] or None,
+                    "effective_until": scope[3] or None,
+                },
                 claim_ids=claim_ids,
                 values=[canonical_json(item.value) for item in ordered],
             )
