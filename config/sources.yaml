@@ -1,0 +1,81 @@
+version: 1
+artist:
+  canonical_name: "Prince' Gutt"
+  primary_handle: "princeguttreal"
+
+source_classes:
+  official:
+    tier: 1
+    default_confidence: high
+  platform_partner:
+    tier: 2
+    default_confidence: high
+  reputable_press:
+    tier: 3
+    default_confidence: medium
+  catalog_secondary:
+    tier: 4
+    default_confidence: medium
+  community:
+    tier: 5
+    default_confidence: low
+
+sources:
+  - id: x_princeguttreal
+    class: official
+    platform: x
+    canonical_url: "https://x.com/princeguttreal"
+    identity_status: verified_for_project
+    enabled: true
+    capabilities: [posts, media, announcements, links]
+
+  - id: instagram_princeguttreal
+    class: official
+    platform: instagram
+    canonical_url: "https://www.instagram.com/princeguttreal/"
+    identity_status: verified_for_project
+    enabled: true
+    capabilities: [posts, reels, stories_if_publicly_available, profile_media]
+
+  - id: spotify_prince_gutt
+    class: platform_partner
+    platform: spotify
+    canonical_url: null
+    discovery_query: "Prince' Gutt"
+    identity_status: verified_artist_canonical_url_pending
+    enabled: true
+    capabilities: [artist_profile, releases, tracks, credits_when_exposed]
+
+  - id: deezer_prince_gutt
+    class: platform_partner
+    platform: deezer
+    canonical_url: null
+    discovery_query: "Prince' Gutt"
+    identity_status: verified_artist_canonical_url_pending
+    enabled: true
+    capabilities: [artist_profile, releases, tracks]
+
+  - id: onerpm
+    class: platform_partner
+    platform: distributor
+    canonical_url: "https://onerpm.com/"
+    identity_status: relationship_confirmed_for_project
+    enabled: true
+    capabilities: [distribution_context]
+
+  - id: cazimu
+    class: platform_partner
+    platform: publisher
+    canonical_url: null
+    discovery_query: "Cazimu Prince' Gutt"
+    identity_status: relationship_confirmed_for_project
+    enabled: true
+    capabilities: [publishing_context]
+
+rules:
+  require_provenance: true
+  preserve_conflicts: true
+  syndicated_sources_count_once: true
+  community_sources_can_verify_identity: false
+  community_sources_can_close_material_claim: false
+  canonicalize_tracking_urls: true

@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pg-researcher.local/schemas/evidence.schema.json",
+  "title": "PG Research Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "evidence_id",
+    "subject",
+    "source_class",
+    "source_url",
+    "captured_at",
+    "content_type",
+    "observation",
+    "identity_status"
+  ],
+  "properties": {
+    "evidence_id": {
+      "type": "string",
+      "pattern": "^pge_[a-zA-Z0-9_-]+$"
+    },
+    "subject": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_id": {
+      "type": ["string", "null"]
+    },
+    "source_class": {
+      "enum": ["official", "platform_partner", "reputable_press", "catalog_secondary", "community"]
+    },
+    "source_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "source_title": {
+      "type": ["string", "null"]
+    },
+    "source_account": {
+      "type": ["string", "null"]
+    },
+    "captured_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "published_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "content_type": {
+      "enum": ["profile", "post", "article", "release", "track", "video", "image", "interview", "document", "other"]
+    },
+    "observation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "excerpt": {
+      "type": ["string", "null"]
+    },
+    "identity_status": {
+      "enum": ["verified", "probable", "unresolved", "mismatch"]
+    },
+    "asset": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["asset_type", "rights_class", "usage_basis"],
+      "properties": {
+        "asset_type": {
+          "enum": ["portrait", "cover", "post", "video_still", "screenshot", "other"]
+        },
+        "rights_class": {
+          "enum": ["A", "B", "C", "D"]
+        },
+        "usage_basis": {
+          "enum": ["artist_authorization", "license", "permission", "research_reference", "unknown"]
+        },
+        "creator": {
+          "type": ["string", "null"]
+        },
+        "transformation_notes": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "notes": {
+      "type": ["string", "null"]
+    }
+  }
+}
