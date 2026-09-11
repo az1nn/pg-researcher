@@ -2,20 +2,17 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import TypeVar
 
 from pydantic import BaseModel, ValidationError
 
 from pg_researcher.models import Evidence, KnowledgeClaim, KnowledgeIndex
-
-T = TypeVar("T", bound=BaseModel)
 
 
 class KnowledgeIOError(ValueError):
     pass
 
 
-def _load_directory(directory: Path, model: type[T], id_field: str) -> list[T]:
+def _load_directory[T: BaseModel](directory: Path, model: type[T], id_field: str) -> list[T]:
     if not directory.is_dir():
         raise KnowledgeIOError(f"not a directory: {directory}")
 
