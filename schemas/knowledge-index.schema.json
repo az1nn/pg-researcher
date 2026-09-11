@@ -16,6 +16,28 @@
     "conflicts": {"type": "array", "items": {"type": "object"}},
     "timeline": {"type": "array", "items": {"type": "object"}},
     "catalog": {"type": "array", "items": {"type": "object"}},
-    "claims": {"type": "array", "items": {"$ref": "claim.schema.json"}}
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claim_id", "subject", "predicate", "value", "epistemic_class", "confidence", "status", "evidence_ids", "contradicting_evidence_ids", "domain"],
+        "properties": {
+          "claim_id": {"type": "string"},
+          "subject": {"type": "string"},
+          "predicate": {"type": "string"},
+          "value": {},
+          "epistemic_class": {"enum": ["fact", "inference", "editorial_hypothesis"]},
+          "confidence": {"enum": ["high", "medium", "low"]},
+          "status": {"enum": ["open", "supported", "conflicted", "retracted"]},
+          "evidence_ids": {"type": "array", "items": {"type": "string"}},
+          "contradicting_evidence_ids": {"type": "array", "items": {"type": "string"}},
+          "effective_at": {"type": ["string", "null"], "format": "date-time"},
+          "effective_until": {"type": ["string", "null"], "format": "date-time"},
+          "domain": {"type": "string"},
+          "entity_id": {"type": ["string", "null"]},
+          "notes": {"type": ["string", "null"]}
+        }
+      }
+    }
   }
 }
