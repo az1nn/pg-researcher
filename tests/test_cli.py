@@ -8,7 +8,7 @@ runner = CliRunner()
 def test_version_command() -> None:
     result = runner.invoke(app, ["version"])
     assert result.exit_code == 0
-    assert result.stdout.strip() == "0.2.0"
+    assert result.stdout.strip() == "0.3.0"
 
 
 def test_sources_validate_command() -> None:
@@ -21,3 +21,9 @@ def test_sources_json_output() -> None:
     result = runner.invoke(app, ["sources", "list", "--json"])
     assert result.exit_code == 0
     assert '"id": "x_princeguttreal"' in result.stdout
+
+
+def test_claim_validate_command() -> None:
+    result = runner.invoke(app, ["claim", "validate", "examples/claims/minimal.json"])
+    assert result.exit_code == 0
+    assert "valid claim:" in result.stdout
