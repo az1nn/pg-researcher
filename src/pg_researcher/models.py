@@ -31,6 +31,26 @@ class EpistemicClass(StrEnum):
     EDITORIAL_HYPOTHESIS = "editorial_hypothesis"
 
 
+class ClaimStatus(StrEnum):
+    OPEN = "open"
+    SUPPORTED = "supported"
+    CONFLICTED = "conflicted"
+    RETRACTED = "retracted"
+
+
+class KnowledgeDomain(StrEnum):
+    IDENTITY = "identity"
+    CATALOG = "catalog"
+    RELEASE = "release"
+    TRACK = "track"
+    COLLABORATION = "collaboration"
+    PRODUCTION = "production"
+    TERRITORY = "territory"
+    BUSINESS = "business"
+    COMMUNITY = "community"
+    OTHER = "other"
+
+
 class ArtistConfig(StrictModel):
     canonical_name: str
     primary_handle: str
@@ -112,6 +132,70 @@ class Evidence(StrictModel):
     identity_status: Literal["verified", "probable", "unresolved", "mismatch"]
     asset: AssetMetadata | None = None
     notes: str | None = None
+
+
+class KnowledgeClaim(StrictModel):
+    claim_id: str = Field(pattern=r"^pgc_[A-Za-z0-9_-]+$")
+    subject: str = Field(min_length=1)
+    predicate: str = Field(min_length=1)
+    value: Any
+    epistemic_class: EpistemicClass
+    confidence: Confidence
+    status: ClaimStatus = ClaimStatus.OPEN
+    evidence_ids: list[str] = Field(default_factory=list)
+    contradicting_evidence_ids: list[str] = Field(default_factory=list)
+    effective_at: datetime | None = None
+    effective_until: datetime | None = None
+    domain: KnowledgeDomain = KnowledgeDomain.OTHER
+    entity_id: str | None = None
+    notes: str | None = None
+
+
+class DedupGroup(StrictModel):
+    fingerprint: str
+    canonical_evidence_id: str
+    duplicate_evidence_ids: list[str]
+
+
+class ConflictGroup(StrictModel):
+    conflict_id: str
+    subject: str
+    predicate: str
+    temporal_scope: dict[str, str | None]
+    claim_ids: list[str]
+    values: list[str]
+
+
+class TimelineEntry(StrictModel):
+    claim_id: str
+    effective_at: datetime
+    effective_until: datetime | None = None
+    subject: str
+    predicate: str
+    value: Any
+
+
+class CatalogEntry(StrictModel):
+    claim_id: str
+    domain: KnowledgeDomain
+    entity_id: str | None = None
+    subject: str
+    predicate: str
+    value: Any
+
+
+class KnowledgeIndex(StrictModel):
+    version: int = Field(ge=1)
+    generated_at: datetime
+    evidence_count: int = Field(ge=0)
+    canonical_evidence_count: int = Field(ge=0)
+    claim_count: int = Field(ge=0)
+    evidence_aliases: dict[str, str]
+    dedup_groups: list[DedupGroup]
+    conflicts: list[ConflictGroup]
+    timeline: list[TimelineEntry]
+    catalog: list[CatalogEntry]
+    claims: list[KnowledgeClaim]
 
 
 class Finding(StrictModel):
