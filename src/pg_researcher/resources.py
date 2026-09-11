@@ -33,4 +33,5 @@ def read_text_resource(relative_path: str, explicit_path: Path | None = None) ->
     if packaged_path is None:
         raise FileNotFoundError(f"No packaged resource mapping for {relative_path}")
 
-    return files("pg_researcher").joinpath(packaged_path).read_text(encoding="utf-8")
+    resource = files("pg_researcher").joinpath(*packaged_path.split("/"))
+    return resource.read_text(encoding="utf-8")
