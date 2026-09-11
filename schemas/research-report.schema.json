@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pg-researcher.local/schemas/research-report.schema.json",
+  "title": "PG Research Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["report_id", "topic", "generated_at", "findings", "open_questions", "evidence_ids"],
+  "properties": {
+    "report_id": {
+      "type": "string",
+      "pattern": "^pgr_[a-zA-Z0-9_-]+$"
+    },
+    "topic": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "scope": {
+      "type": ["string", "null"]
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["finding_id", "statement", "epistemic_class", "confidence", "evidence_ids"],
+        "properties": {
+          "finding_id": {
+            "type": "string"
+          },
+          "statement": {
+            "type": "string",
+            "minLength": 1
+          },
+          "epistemic_class": {
+            "enum": ["fact", "inference", "editorial_hypothesis"]
+          },
+          "confidence": {
+            "enum": ["high", "medium", "low"]
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {"type": "string"},
+            "uniqueItems": true
+          },
+          "contradicting_evidence_ids": {
+            "type": "array",
+            "items": {"type": "string"},
+            "uniqueItems": true,
+            "default": []
+          },
+          "editorial_lenses": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "prince_no_beat",
+                "do_arquivo",
+                "o_corre_por_tras",
+                "directors_note",
+                "prince_responde",
+                "identity",
+                "catalog",
+                "territory",
+                "collaboration",
+                "production",
+                "fashion_visual",
+                "business_ip",
+                "community"
+              ]
+            },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["description", "evidence_ids"],
+        "properties": {
+          "description": {"type": "string"},
+          "evidence_ids": {
+            "type": "array",
+            "items": {"type": "string"},
+            "minItems": 2,
+            "uniqueItems": true
+          }
+        }
+      },
+      "default": []
+    },
+    "asset_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["evidence_id", "usage_basis"],
+        "properties": {
+          "evidence_id": {"type": "string"},
+          "usage_basis": {
+            "enum": ["artist_authorization", "license", "permission", "research_reference", "unknown"]
+          },
+          "purpose": {"type": ["string", "null"]}
+        }
+      },
+      "default": []
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    }
+  }
+}
