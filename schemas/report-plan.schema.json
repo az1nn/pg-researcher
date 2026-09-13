@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pg-researcher.local/schemas/report-plan.schema.json",
+  "title": "PG Report Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["report_id", "topic", "finding_claim_ids", "bridges", "open_questions"],
+  "properties": {
+    "report_id": {"type": "string", "pattern": "^pgr_[A-Za-z0-9_-]+$"},
+    "topic": {"type": "string", "minLength": 1},
+    "scope": {"type": ["string", "null"]},
+    "finding_claim_ids": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^pgc_[A-Za-z0-9_-]+$"},
+      "uniqueItems": true
+    },
+    "bridges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "bridge_id",
+          "claim_ids",
+          "implication",
+          "editorial_format",
+          "editorial_lens",
+          "opportunity"
+        ],
+        "properties": {
+          "bridge_id": {"type": "string", "pattern": "^pgb_[A-Za-z0-9_-]+$"},
+          "claim_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "string", "pattern": "^pgc_[A-Za-z0-9_-]+$"},
+            "uniqueItems": true
+          },
+          "implication": {"type": "string", "minLength": 1},
+          "editorial_format": {
+            "enum": [
+              "prince_no_beat",
+              "do_arquivo",
+              "o_corre_por_tras",
+              "directors_note",
+              "prince_responde"
+            ]
+          },
+          "editorial_lens": {
+            "enum": [
+              "identity",
+              "catalog",
+              "territory",
+              "collaboration",
+              "production",
+              "fashion_visual",
+              "business_ip",
+              "community"
+            ]
+          },
+          "opportunity": {"type": "string", "minLength": 1},
+          "objective": {"type": ["string", "null"]}
+        }
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}
