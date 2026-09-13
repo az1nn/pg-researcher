@@ -16,10 +16,11 @@ The skill is not a generic content generator. Its job is to build a trustworthy 
 6. **Catalog is living IP.** Old releases remain researchable narrative inventory.
 7. **Recognizability over volume.** Findings should reinforce the Prince' Gutt universe, not produce generic posting ideas.
 8. **Asset provenance matters.** Store the original public URL, author/account, capture date and usage basis for each visual asset.
+9. **Strategy needs an explicit bridge.** A strategic implication or editorial opportunity must point back to one or more knowledge claims; the renderer must not invent that bridge.
 
 ## Editorial lenses
 
-Use these lenses when translating evidence into opportunities:
+Use these formats when translating evidence into opportunities:
 
 - `prince_no_beat`: production, craft, sound design, studio process.
 - `do_arquivo`: catalog history, old visuals, releases, eras, memories.
@@ -72,28 +73,46 @@ A claim must point to one or more evidence records. Assign confidence:
 - `medium`: credible secondary evidence with no contradiction;
 - `low`: weak, incomplete or community-only evidence.
 
-### 6. Synthesize
+Claims are explicit artifacts. Do not silently promote evidence prose into a claim.
 
-Produce a research report that contains:
+### 6. Build the knowledge index
 
-- executive findings;
-- verified facts;
+Use the deterministic index to:
+
+- collapse duplicate/syndicated evidence;
+- preserve contradictions;
+- project explicit event dates into the timeline;
+- project catalog/release/track/collaboration/production claims into the catalog view;
+- retain retractions without treating them as active knowledge.
+
+### 7. Plan and synthesize
+
+Reporting must consume the knowledge index.
+
+Use a `ReportPlan` to select findings and to declare any strategic bridge. Each bridge must contain supporting `claim_ids`, a strategic implication, a proprietary editorial format, an editorial lens and the proposed opportunity.
+
+The generated research report contains:
+
+- executive findings projected from claims;
 - unresolved/conflicting claims;
-- timeline changes;
-- catalog/credit findings;
 - asset candidates with provenance;
+- strategic implications declared in the plan;
 - editorial opportunities mapped to proprietary formats;
 - unanswered questions;
 - source ledger.
 
-### 7. Validate
+The deterministic renderer formats those decisions; it does not invent strategic implications.
+
+### 8. Validate
 
 Before delivery:
 
 - every material factual statement has evidence;
 - facts and hypotheses are visibly separated;
+- every strategic implication/opportunity points to existing, non-retracted claims;
 - no source is silently upgraded in authority;
 - no duplicate/syndicated article is counted as independent corroboration;
+- conflicts are surfaced rather than resolved automatically;
 - timestamps and URLs are present;
 - asset-use basis is recorded;
 - uncertain identity matches remain unresolved.
@@ -116,6 +135,12 @@ Never deliver a research conclusion as a bare assertion. The minimum useful unit
 
 ```text
 claim -> evidence -> confidence -> implication
+```
+
+For reporting, the auditable strategy chain is:
+
+```text
+claim(s) -> source ledger -> explicit strategic implication -> editorial opportunity
 ```
 
 When an implication is strategic rather than factual, label it accordingly.
