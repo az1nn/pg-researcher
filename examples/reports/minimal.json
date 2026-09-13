@@ -5,16 +5,33 @@
   "scope": "Executable-core example",
   "findings": [
     {
-      "finding_id": "finding_official_x",
-      "statement": "The project registry treats @princeguttreal on X as an official source.",
+      "finding_id": "pgf_official_x_identity",
+      "claim_id": "pgc_official_x_identity",
+      "statement": "Prince' Gutt — official_x_account: @princeguttreal",
       "epistemic_class": "fact",
       "confidence": "high",
+      "status": "supported",
       "evidence_ids": ["pge_official_profile_seed"],
       "contradicting_evidence_ids": [],
       "editorial_lenses": ["identity"]
     }
   ],
   "conflicts": [],
+  "source_ledger": [
+    {
+      "evidence_id": "pge_official_profile_seed",
+      "source_class": "official",
+      "source_url": "https://x.com/princeguttreal",
+      "source_title": "Prince' Gutt official X profile",
+      "source_account": "princeguttreal",
+      "captured_at": "2026-09-11T18:00:00Z",
+      "published_at": null,
+      "supports_claim_ids": ["pgc_official_x_identity"],
+      "contradicts_claim_ids": []
+    }
+  ],
+  "strategic_implications": [],
+  "editorial_opportunities": [],
   "asset_candidates": [],
   "open_questions": [],
   "evidence_ids": ["pge_official_profile_seed"]
