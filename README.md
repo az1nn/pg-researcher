@@ -8,7 +8,7 @@ The repository turns public, authorized and verifiable information about Prince'
 
 Prince' Gutt is treated as an artist-platform: music, production, image, territory, fashion, community and future IP. Research should strengthen recognizability and repertoire rather than fill a calendar.
 
-Primary editorial lenses:
+Primary editorial formats:
 
 - **Prince no Beat** — production as spectacle.
 - **Do Arquivo** — catalog, history and memory as living inventory.
@@ -47,7 +47,6 @@ pg-researcher sources validate
 pg-researcher sources list
 pg-researcher evidence validate examples/evidence/minimal.json
 pg-researcher claim validate examples/claims/minimal.json
-pg-researcher report validate examples/reports/minimal.json
 
 # Controlled public-source capture
 pg-researcher collect source x_princeguttreal --output data/evidence/x-profile.json
@@ -58,9 +57,21 @@ pg-researcher knowledge build \
   --claims-dir examples/claims \
   --output data/index/knowledge.json
 pg-researcher knowledge inspect data/index/knowledge.json
+
+# Evidence-backed reporting
+pg-researcher report plan-validate examples/reporting/plan.json
+pg-researcher report build \
+  --knowledge data/index/knowledge.json \
+  --evidence-dir examples/evidence \
+  --plan examples/reporting/plan.json \
+  --output-json data/reports/identity.json \
+  --output-markdown data/reports/identity.md
+pg-researcher report validate data/reports/identity.json
 ```
 
 Collectors normalize provenance into typed evidence; they do not synthesize claims. Claims are explicit artifacts. The knowledge index canonicalizes duplicate evidence, preserves conflicts and projects timeline/catalog views without silently deciding which conflicting value is true.
+
+Reporting consumes that knowledge layer. Findings are projected from claims; strategic implications and editorial opportunities only enter through an explicit `ReportPlan` anchored to claim IDs.
 
 ## Repository map
 
@@ -75,22 +86,26 @@ Collectors normalize provenance into typed evidence; they do not synthesize clai
 │   ├── ARCHITECTURE.md
 │   ├── COLLECTORS.md
 │   ├── KNOWLEDGE_INDEX.md
+│   ├── REPORTING.md
 │   ├── RESEARCH_POLICY.md
 │   └── RIGHTS_AND_ASSETS.md
 ├── examples/
 │   ├── claims/minimal.json
 │   ├── evidence/minimal.json
+│   ├── reporting/plan.json
 │   └── reports/minimal.json
 ├── schemas/
 │   ├── claim.schema.json
 │   ├── evidence.schema.json
 │   ├── knowledge-index.schema.json
+│   ├── report-plan.schema.json
 │   └── research-report.schema.json
 ├── specs/
 │   ├── 001-foundation.md
 │   ├── 002-executable-core.md
 │   ├── 003-collectors.md
-│   └── 004-knowledge-index.md
+│   ├── 004-knowledge-index.md
+│   └── 005-reporting.md
 ├── src/pg_researcher/
 └── tests/
 ```
@@ -109,5 +124,5 @@ python -m build --wheel
 2. **Executable core** — typed models, registry loader, validation CLI and CI. ✅
 3. **Collectors** — controlled web/DSP/social acquisition, cache and fetch policy. ✅
 4. **Knowledge index** — explicit claims, evidence dedupe, conflicts, catalog/timeline indexes. ✅
-5. **Reporting** — briefs, source ledger and editorial-opportunity synthesis.
+5. **Reporting** — briefs, source ledger and explicit editorial-opportunity bridges. ✅
 6. **Assets** — provenance manifest, authorized acquisition/derivatives and publication gates.
