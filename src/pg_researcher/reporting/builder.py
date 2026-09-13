@@ -7,6 +7,7 @@ from datetime import UTC, datetime
 from pg_researcher.models import (
     AssetCandidate,
     ClaimStatus,
+    EditorialLens,
     EditorialOpportunity,
     Evidence,
     Finding,
@@ -64,6 +65,14 @@ def _used_claim_ids(plan: ReportPlan) -> list[str]:
     return sorted(ids)
 
 
+def _conflict_context_claim_ids(index: KnowledgeIndex, selected_ids: set[str]) -> set[str]:
+    related = set(selected_ids)
+    for conflict in index.conflicts:
+        if selected_ids.intersection(conflict.claim_ids):
+            related.update(conflict.claim_ids)
+    return related
+
+
 def _claim_evidence(claim: KnowledgeClaim) -> tuple[set[str], set[str]]:
     return set(claim.evidence_ids), set(claim.contradicting_evidence_ids)
 
@@ -119,19 +128,15 @@ def _source_ledger(
     return ledger, used_ids, assets
 
 
-def _report_conflicts(
-    index: KnowledgeIndex,
-    included_claims: dict[str, KnowledgeClaim],
-) -> list[ReportConflict]:
-    selected = set(included_claims)
+def _report_conflicts(index: KnowledgeIndex, selected_ids: set[str]) -> list[ReportConflict]:
+    claims_by_id = {claim.claim_id: claim for claim in index.claims}
     conflicts: list[ReportConflict] = []
     for conflict in index.conflicts:
-        if not selected.intersection(conflict.claim_ids):
+        if not selected_ids.intersection(conflict.claim_ids):
             continue
-        claim_ids = sorted(set(conflict.claim_ids).intersection(selected))
         evidence_ids: set[str] = set()
         for claim_id in conflict.claim_ids:
-            claim = next((item for item in index.claims if item.claim_id == claim_id), None)
+            claim = claims_by_id.get(claim_id)
             if claim is None:
                 continue
             evidence_ids.update(claim.evidence_ids)
@@ -143,7 +148,7 @@ def _report_conflicts(
                     f"Conflicting values for {conflict.subject} / {conflict.predicate}; "
                     "no winner was selected automatically."
                 ),
-                claim_ids=claim_ids,
+                claim_ids=sorted(conflict.claim_ids),
                 evidence_ids=sorted(evidence_ids),
             )
         )
@@ -158,10 +163,11 @@ def build_research_report(
     generated_at: datetime | None = None,
 ) -> ResearchReport:
     claims_by_id = _validate_plan(index, plan)
-    included_ids = _used_claim_ids(plan)
-    included_claims = [claims_by_id[claim_id] for claim_id in included_ids]
+    selected_ids = set(_used_claim_ids(plan))
+    ledger_ids = _conflict_context_claim_ids(index, selected_ids)
+    ledger_claims = [claims_by_id[claim_id] for claim_id in sorted(ledger_ids)]
 
-    lenses_by_claim: dict[str, set] = defaultdict(set)
+    lenses_by_claim: dict[str, set[EditorialLens]] = defaultdict(set)
     for bridge in plan.bridges:
         for claim_id in bridge.claim_ids:
             lenses_by_claim[claim_id].add(bridge.editorial_lens)
@@ -184,8 +190,7 @@ def build_research_report(
         for claim in (claims_by_id[claim_id] for claim_id in plan.finding_claim_ids)
     ]
 
-    ledger, evidence_ids, asset_candidates = _source_ledger(evidence, included_claims)
-    included_map = {claim.claim_id: claim for claim in included_claims}
+    ledger, evidence_ids, asset_candidates = _source_ledger(evidence, ledger_claims)
 
     strategic_implications = [
         StrategicImplication(
@@ -213,7 +218,7 @@ def build_research_report(
         generated_at=generated_at or datetime.now(UTC),
         scope=plan.scope,
         findings=findings,
-        conflicts=_report_conflicts(index, included_map),
+        conflicts=_report_conflicts(index, selected_ids),
         source_ledger=ledger,
         strategic_implications=strategic_implications,
         editorial_opportunities=editorial_opportunities,
