@@ -19,6 +19,14 @@ from pg_researcher.knowledge.io import (
     write_knowledge_index,
 )
 from pg_researcher.registry import RegistryError, load_registry
+from pg_researcher.reporting.builder import ReportingError, build_research_report
+from pg_researcher.reporting.io import (
+    ReportIOError,
+    load_report_plan,
+    load_research_report,
+    write_research_report,
+)
+from pg_researcher.reporting.render import render_markdown
 from pg_researcher.validation import SchemaValidationError, validate_file
 
 app = typer.Typer(
@@ -30,7 +38,7 @@ sources_app = typer.Typer(help="Inspect and validate the curated source registry
 evidence_app = typer.Typer(help="Validate evidence artifacts.")
 claim_app = typer.Typer(help="Validate explicit knowledge claims.")
 knowledge_app = typer.Typer(help="Build and inspect the deterministic knowledge index.")
-report_app = typer.Typer(help="Validate research-report artifacts.")
+report_app = typer.Typer(help="Build, render and validate research reports.")
 collect_app = typer.Typer(help="Capture controlled public-source evidence.")
 app.add_typer(sources_app, name="sources")
 app.add_typer(evidence_app, name="evidence")
@@ -151,14 +159,68 @@ def knowledge_inspect(path: Path = typer.Argument(..., exists=True, dir_okay=Fal
     typer.echo(f"catalog entries: {len(index.catalog)}")
 
 
+@report_app.command("plan-validate")
+def report_plan_validate(path: Path = typer.Argument(..., exists=True, dir_okay=False)) -> None:
+    """Validate a report plan before synthesis."""
+    try:
+        validate_file(path, "report_plan")
+    except SchemaValidationError as exc:
+        _fail(str(exc))
+    typer.echo(f"valid report plan: {path}")
+
+
 @report_app.command("validate")
 def report_validate(path: Path = typer.Argument(..., exists=True, dir_okay=False)) -> None:
-    """Validate one research report JSON document against the canonical schema."""
+    """Validate one generated research report."""
     try:
         validate_file(path, "report")
     except SchemaValidationError as exc:
         _fail(str(exc))
     typer.echo(f"valid report: {path}")
+
+
+@report_app.command("build")
+def report_build(
+    knowledge: Path = typer.Option(..., "--knowledge", exists=True, dir_okay=False),
+    evidence_dir: Path = typer.Option(..., "--evidence-dir", exists=True, file_okay=False),
+    plan: Path = typer.Option(..., "--plan", exists=True, dir_okay=False),
+    output_json: Path = typer.Option(..., "--output-json", dir_okay=False),
+    output_markdown: Path | None = typer.Option(None, "--output-markdown", dir_okay=False),
+) -> None:
+    """Build an evidence-backed report from a knowledge index and explicit report plan."""
+    try:
+        index = load_knowledge_index(knowledge)
+        evidence = load_evidence_dir(evidence_dir)
+        loaded_plan = load_report_plan(plan)
+        report = build_research_report(index, evidence, loaded_plan)
+        write_research_report(report, output_json)
+    except (KnowledgeIOError, ReportIOError, ReportingError) as exc:
+        _fail(str(exc))
+
+    if output_markdown is not None:
+        output_markdown.parent.mkdir(parents=True, exist_ok=True)
+        output_markdown.write_text(render_markdown(report), encoding="utf-8")
+        typer.echo(f"wrote report Markdown: {output_markdown}")
+    typer.echo(f"wrote report JSON: {output_json}")
+
+
+@report_app.command("render")
+def report_render(
+    path: Path = typer.Argument(..., exists=True, dir_okay=False),
+    output: Path | None = typer.Option(None, "--output", dir_okay=False),
+) -> None:
+    """Render a generated research report as Markdown."""
+    try:
+        report = load_research_report(path)
+    except ReportIOError as exc:
+        _fail(str(exc))
+    rendered = render_markdown(report)
+    if output is None:
+        typer.echo(rendered)
+        return
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(rendered, encoding="utf-8")
+    typer.echo(f"wrote report Markdown: {output}")
 
 
 @collect_app.command("source")
