@@ -10,6 +10,14 @@ from pg_researcher.collectors.cache import FileCache
 from pg_researcher.collectors.http import HttpFetcher
 from pg_researcher.collectors.policy import FetchPolicyError, load_fetch_policy
 from pg_researcher.collectors.web import CollectorError, WebCollector
+from pg_researcher.knowledge.index import KnowledgeIndexError, build_knowledge_index
+from pg_researcher.knowledge.io import (
+    KnowledgeIOError,
+    load_claim_dir,
+    load_evidence_dir,
+    load_knowledge_index,
+    write_knowledge_index,
+)
 from pg_researcher.registry import RegistryError, load_registry
 from pg_researcher.validation import SchemaValidationError, validate_file
 
@@ -20,10 +28,14 @@ app = typer.Typer(
 )
 sources_app = typer.Typer(help="Inspect and validate the curated source registry.")
 evidence_app = typer.Typer(help="Validate evidence artifacts.")
+claim_app = typer.Typer(help="Validate explicit knowledge claims.")
+knowledge_app = typer.Typer(help="Build and inspect the deterministic knowledge index.")
 report_app = typer.Typer(help="Validate research-report artifacts.")
 collect_app = typer.Typer(help="Capture controlled public-source evidence.")
 app.add_typer(sources_app, name="sources")
 app.add_typer(evidence_app, name="evidence")
+app.add_typer(claim_app, name="claim")
+app.add_typer(knowledge_app, name="knowledge")
 app.add_typer(report_app, name="report")
 app.add_typer(collect_app, name="collect")
 
@@ -92,6 +104,51 @@ def evidence_validate(path: Path = typer.Argument(..., exists=True, dir_okay=Fal
     except SchemaValidationError as exc:
         _fail(str(exc))
     typer.echo(f"valid evidence: {path}")
+
+
+@claim_app.command("validate")
+def claim_validate(path: Path = typer.Argument(..., exists=True, dir_okay=False)) -> None:
+    """Validate one explicit knowledge claim."""
+    try:
+        validate_file(path, "claim")
+    except SchemaValidationError as exc:
+        _fail(str(exc))
+    typer.echo(f"valid claim: {path}")
+
+
+@knowledge_app.command("build")
+def knowledge_build(
+    evidence_dir: Path = typer.Option(..., "--evidence-dir", exists=True, file_okay=False),
+    claims_dir: Path = typer.Option(..., "--claims-dir", exists=True, file_okay=False),
+    output: Path = typer.Option(..., "--output", dir_okay=False),
+) -> None:
+    """Build a deterministic knowledge index from evidence and explicit claims."""
+    try:
+        evidence = load_evidence_dir(evidence_dir)
+        claims = load_claim_dir(claims_dir)
+        index = build_knowledge_index(evidence, claims)
+        write_knowledge_index(index, output)
+    except (KnowledgeIOError, KnowledgeIndexError) as exc:
+        _fail(str(exc))
+    typer.echo(
+        f"wrote knowledge index: {output} "
+        f"({index.claim_count} claims / {len(index.conflicts)} conflicts)"
+    )
+
+
+@knowledge_app.command("inspect")
+def knowledge_inspect(path: Path = typer.Argument(..., exists=True, dir_okay=False)) -> None:
+    """Show high-level counts for one generated knowledge index."""
+    try:
+        index = load_knowledge_index(path)
+    except KnowledgeIOError as exc:
+        _fail(str(exc))
+    typer.echo(f"evidence: {index.evidence_count}")
+    typer.echo(f"canonical evidence: {index.canonical_evidence_count}")
+    typer.echo(f"claims: {index.claim_count}")
+    typer.echo(f"conflicts: {len(index.conflicts)}")
+    typer.echo(f"timeline entries: {len(index.timeline)}")
+    typer.echo(f"catalog entries: {len(index.catalog)}")
 
 
 @report_app.command("validate")
