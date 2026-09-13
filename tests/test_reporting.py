@@ -27,12 +27,12 @@ def _evidence(evidence_id: str = "pge_official") -> Evidence:
         evidence_id=evidence_id,
         subject="Prince' Gutt",
         source_class=SourceClass.OFFICIAL,
-        source_url="https://x.com/princeguttreal",
-        source_title="Prince' Gutt official X profile",
+        source_url=f"https://example.com/{evidence_id}",
+        source_title="Prince' Gutt source",
         source_account="princeguttreal",
         captured_at=NOW,
         content_type="profile",
-        observation="Official Prince' Gutt profile.",
+        observation=f"Observation from {evidence_id}.",
         identity_status="verified",
     )
 
@@ -42,6 +42,7 @@ def _claim(
     *,
     value: str = "@princeguttreal",
     status: ClaimStatus = ClaimStatus.OPEN,
+    evidence_id: str = "pge_official",
 ) -> KnowledgeClaim:
     return KnowledgeClaim(
         claim_id=claim_id,
@@ -51,7 +52,7 @@ def _claim(
         epistemic_class=EpistemicClass.FACT,
         confidence=Confidence.HIGH,
         status=status,
-        evidence_ids=["pge_official"],
+        evidence_ids=[evidence_id],
         domain=KnowledgeDomain.IDENTITY,
         entity_id="prince_gutt",
     )
@@ -89,6 +90,29 @@ def test_report_builder_preserves_claim_boundary_and_source_ledger() -> None:
     assert report.source_ledger[0].supports_claim_ids == ["pgc_identity"]
     assert report.strategic_implications[0].claim_ids == ["pgc_identity"]
     assert report.editorial_opportunities[0].editorial_format is EditorialFormat.DIRECTORS_NOTE
+
+
+def test_conflict_context_includes_both_sides_and_their_evidence() -> None:
+    first_evidence = _evidence("pge_first")
+    second_evidence = _evidence("pge_second")
+    first = _claim("pgc_first", value="@princeguttreal", evidence_id="pge_first")
+    second = _claim("pgc_second", value="@other", evidence_id="pge_second")
+    index = build_knowledge_index(
+        [first_evidence, second_evidence],
+        [first, second],
+        generated_at=NOW,
+    )
+
+    report = build_research_report(
+        index,
+        [first_evidence, second_evidence],
+        _plan("pgc_first"),
+        generated_at=NOW,
+    )
+
+    assert report.conflicts[0].claim_ids == ["pgc_first", "pgc_second"]
+    assert report.conflicts[0].evidence_ids == ["pge_first", "pge_second"]
+    assert report.evidence_ids == ["pge_first", "pge_second"]
 
 
 def test_markdown_renderer_labels_strategy_as_separate_sections() -> None:
