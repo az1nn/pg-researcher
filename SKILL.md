@@ -17,6 +17,7 @@ The skill is not a generic content generator. Its job is to build a trustworthy 
 7. **Recognizability over volume.** Findings should reinforce the Prince' Gutt universe, not produce generic posting ideas.
 8. **Asset provenance matters.** Store the original public URL, author/account, capture date and usage basis for each visual asset.
 9. **Strategy needs an explicit bridge.** A strategic implication or editorial opportunity must point back to one or more knowledge claims; the renderer must not invent that bridge.
+10. **Public is not ownerless.** A discovered visual asset remains research material until provenance, rights basis, identity, file integrity and publication checks are satisfied.
 
 ## Editorial lenses
 
@@ -59,7 +60,7 @@ Search source tiers in order:
 
 For each useful item record the fields defined in `schemas/evidence.schema.json`.
 
-Never copy long copyrighted passages when a short excerpt plus paraphrase is sufficient. For visual assets, record provenance and keep an asset manifest; do not treat an image found on the web as ownerless.
+Never copy long copyrighted passages when a short excerpt plus paraphrase is sufficient. For visual assets, record provenance; do not treat an image found on the web as ownerless.
 
 ### 4. Normalize
 
@@ -103,7 +104,23 @@ The generated research report contains:
 
 The deterministic renderer formats those decisions; it does not invent strategic implications.
 
-### 8. Validate
+### 8. Register and gate assets
+
+When a visual is retained beyond research reference:
+
+1. create an `AssetRecord` with source URL/account and capture time;
+2. classify rights as A/B/C/D and record the explicit usage basis;
+3. register the original local file with byte size and SHA-256, or use the controlled public acquisition command;
+4. register every derivative against a parent `file_id` with transformation history;
+5. build/validate the `AssetManifest`;
+6. verify local file integrity;
+7. run the publication gate before public-facing use.
+
+`artist_authorization` can clear class A material controlled by the artist/project. It does not automatically clear collaborator photography/artwork, platform UI/trademarks or press/editorial material.
+
+See `docs/ASSETS.md` and `docs/RIGHTS_AND_ASSETS.md`.
+
+### 9. Validate
 
 Before delivery:
 
@@ -114,7 +131,10 @@ Before delivery:
 - no duplicate/syndicated article is counted as independent corroboration;
 - conflicts are surfaced rather than resolved automatically;
 - timestamps and URLs are present;
-- asset-use basis is recorded;
+- retained assets have rights class and usage basis;
+- local asset files still match the manifest hash;
+- derivatives have parent/transformation history;
+- public-facing assets pass the publication gate;
 - uncertain identity matches remain unresolved.
 
 ## Source authority
@@ -141,6 +161,12 @@ For reporting, the auditable strategy chain is:
 
 ```text
 claim(s) -> source ledger -> explicit strategic implication -> editorial opportunity
+```
+
+For visuals, the auditable publication chain is:
+
+```text
+source -> rights/usage basis -> SHA-256 original -> derivative history -> publication gate
 ```
 
 When an implication is strategic rather than factual, label it accordingly.

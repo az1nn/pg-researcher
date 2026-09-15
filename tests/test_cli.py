@@ -8,7 +8,7 @@ runner = CliRunner()
 def test_version_command() -> None:
     result = runner.invoke(app, ["version"])
     assert result.exit_code == 0
-    assert result.stdout.strip() == "0.4.0"
+    assert result.stdout.strip() == "0.5.0"
 
 
 def test_sources_validate_command() -> None:
@@ -39,3 +39,9 @@ def test_report_validate_command() -> None:
     result = runner.invoke(app, ["report", "validate", "examples/reports/minimal.json"])
     assert result.exit_code == 0
     assert "valid report:" in result.stdout
+
+
+def test_asset_record_validate_command() -> None:
+    result = runner.invoke(app, ["asset", "record-validate", "examples/assets/record.json"])
+    assert result.exit_code == 0
+    assert "valid asset record:" in result.stdout

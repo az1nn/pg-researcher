@@ -8,9 +8,19 @@ from jsonschema import Draft202012Validator, FormatChecker
 
 from pg_researcher.resources import read_text_resource
 
-SchemaKind = Literal["claim", "evidence", "knowledge", "report", "report_plan"]
+SchemaKind = Literal[
+    "asset_manifest",
+    "asset_record",
+    "claim",
+    "evidence",
+    "knowledge",
+    "report",
+    "report_plan",
+]
 
 _SCHEMA_FILES: dict[SchemaKind, str] = {
+    "asset_manifest": "schemas/asset-manifest.schema.json",
+    "asset_record": "schemas/asset-record.schema.json",
     "claim": "schemas/claim.schema.json",
     "evidence": "schemas/evidence.schema.json",
     "knowledge": "schemas/knowledge-index.schema.json",
