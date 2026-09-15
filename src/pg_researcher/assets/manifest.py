@@ -42,7 +42,9 @@ def _rooted_path(root: Path, path: Path) -> tuple[Path, str]:
     try:
         relative = resolved.relative_to(root_resolved)
     except ValueError as exc:
-        raise AssetManifestError(f"asset file must stay inside root {root_resolved}: {resolved}") from exc
+        raise AssetManifestError(
+            f"asset file must stay inside root {root_resolved}: {resolved}"
+        ) from exc
     return resolved, relative.as_posix()
 
 
@@ -87,7 +89,11 @@ def file_record_from_path(
     if not resolved.is_file():
         raise AssetManifestError(f"asset file does not exist: {resolved}")
     digest = sha256_file(resolved)
-    detected_media_type = media_type or mimetypes.guess_type(resolved.name)[0] or "application/octet-stream"
+    detected_media_type = (
+        media_type
+        or mimetypes.guess_type(resolved.name)[0]
+        or "application/octet-stream"
+    )
     try:
         return AssetFileRecord(
             file_id=_file_id(asset_id, digest),
