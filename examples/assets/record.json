@@ -1,0 +1,19 @@
+{
+  "asset_id": "pga_official_profile_seed",
+  "evidence_id": "pge_official_profile_seed",
+  "source_url": "https://x.com/princeguttreal",
+  "final_url": null,
+  "source_account": "princeguttreal",
+  "captured_at": "2026-09-15T11:30:00Z",
+  "asset_type": "portrait",
+  "rights_class": "A",
+  "usage_basis": "artist_authorization",
+  "identity_status": "verified",
+  "creator": null,
+  "work_or_release": null,
+  "attribution_required": false,
+  "attribution_text": null,
+  "restrictions": [],
+  "files": [],
+  "notes": "Metadata-only seed. Add a hashed local file before publication."
+}

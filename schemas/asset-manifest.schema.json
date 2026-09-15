@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pg-researcher.local/schemas/asset-manifest.schema.json",
+  "title": "PG Asset Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "generated_at", "assets"],
+  "properties": {
+    "version": {"type": "integer", "minimum": 1},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "assets": {"type": "array", "items": {"$ref": "#/$defs/asset"}}
+  },
+  "$defs": {
+    "transformation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["transformation_id", "operation", "parameters", "created_at"],
+      "properties": {
+        "transformation_id": {"type": "string", "pattern": "^pgt_[A-Za-z0-9_-]+$"},
+        "operation": {"type": "string", "minLength": 1},
+        "tool": {"type": ["string", "null"]},
+        "parameters": {"type": "object"},
+        "notes": {"type": ["string", "null"]},
+        "created_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["file_id", "role", "path", "sha256", "size_bytes", "media_type", "transformations", "created_at"],
+      "properties": {
+        "file_id": {"type": "string", "pattern": "^pgaf_[A-Za-z0-9_-]+$"},
+        "role": {"enum": ["original", "derivative"]},
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "size_bytes": {"type": "integer", "minimum": 0},
+        "media_type": {"type": "string", "minLength": 1},
+        "parent_file_id": {"type": ["string", "null"]},
+        "transformations": {"type": "array", "items": {"$ref": "#/$defs/transformation"}},
+        "acquired_from": {"type": ["string", "null"], "format": "uri"},
+        "created_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["asset_id", "source_url", "captured_at", "asset_type", "rights_class", "usage_basis", "identity_status", "attribution_required", "restrictions", "files"],
+      "properties": {
+        "asset_id": {"type": "string", "pattern": "^pga_[A-Za-z0-9_-]+$"},
+        "evidence_id": {"type": ["string", "null"]},
+        "source_url": {"type": "string", "format": "uri"},
+        "final_url": {"type": ["string", "null"], "format": "uri"},
+        "source_account": {"type": ["string", "null"]},
+        "captured_at": {"type": "string", "format": "date-time"},
+        "asset_type": {"enum": ["portrait", "cover", "post", "video_still", "screenshot", "other"]},
+        "rights_class": {"enum": ["A", "B", "C", "D"]},
+        "usage_basis": {"enum": ["artist_authorization", "license", "permission", "research_reference", "unknown"]},
+        "identity_status": {"enum": ["verified", "probable", "unresolved", "mismatch"]},
+        "creator": {"type": ["string", "null"]},
+        "work_or_release": {"type": ["string", "null"]},
+        "attribution_required": {"type": "boolean"},
+        "attribution_text": {"type": ["string", "null"]},
+        "restrictions": {"type": "array", "items": {"type": "string"}},
+        "files": {"type": "array", "items": {"$ref": "#/$defs/file"}},
+        "notes": {"type": ["string", "null"]}
+      }
+    }
+  }
+}
