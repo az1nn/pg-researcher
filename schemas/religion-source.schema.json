@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pg-researcher.local/schemas/religion-source.schema.json",
+  "title": "PG Religion Research Source",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["source_id", "title", "source_class", "work_type", "rights_status"],
+  "properties": {
+    "source_id": {"type": "string", "pattern": "^pgrs_[A-Za-z0-9_-]+$"},
+    "title": {"type": "string", "minLength": 1},
+    "creator": {"type": ["string", "null"]},
+    "source_class": {
+      "type": "string",
+      "enum": ["primary_canonical", "academic_critical", "tradition_commentary", "modern_esoteric", "popular_oral"]
+    },
+    "work_type": {"type": "string", "minLength": 1},
+    "language": {"type": ["string", "null"]},
+    "edition": {"type": ["string", "null"]},
+    "translator": {"type": ["string", "null"]},
+    "publisher": {"type": ["string", "null"]},
+    "published_at": {"type": ["string", "null"], "format": "date-time"},
+    "canonical_url": {"type": ["string", "null"], "format": "uri"},
+    "discovery_url": {"type": ["string", "null"], "format": "uri"},
+    "rights_status": {
+      "type": "string",
+      "enum": ["public_domain_text", "licensed_or_authorized", "quotation_only", "research_only", "unknown"]
+    },
+    "zotero_item_key": {"type": ["string", "null"]},
+    "bibtex_key": {"type": ["string", "null"]},
+    "notes": {"type": ["string", "null"]}
+  }
+}
