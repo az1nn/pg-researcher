@@ -51,6 +51,25 @@ class KnowledgeDomain(StrEnum):
     OTHER = "other"
 
 
+class EditorialFormat(StrEnum):
+    PRINCE_NO_BEAT = "prince_no_beat"
+    DO_ARQUIVO = "do_arquivo"
+    O_CORRE_POR_TRAS = "o_corre_por_tras"
+    DIRECTORS_NOTE = "directors_note"
+    PRINCE_RESPONDE = "prince_responde"
+
+
+class EditorialLens(StrEnum):
+    IDENTITY = "identity"
+    CATALOG = "catalog"
+    TERRITORY = "territory"
+    COLLABORATION = "collaboration"
+    PRODUCTION = "production"
+    FASHION_VISUAL = "fashion_visual"
+    BUSINESS_IP = "business_ip"
+    COMMUNITY = "community"
+
+
 class ArtistConfig(StrictModel):
     canonical_name: str
     primary_handle: str
@@ -198,14 +217,77 @@ class KnowledgeIndex(StrictModel):
     claims: list[KnowledgeClaim]
 
 
+class ReportBridgePlan(StrictModel):
+    bridge_id: str = Field(pattern=r"^pgb_[A-Za-z0-9_-]+$")
+    claim_ids: list[str] = Field(min_length=1)
+    implication: str = Field(min_length=1)
+    editorial_format: EditorialFormat
+    editorial_lens: EditorialLens
+    opportunity: str = Field(min_length=1)
+    objective: str | None = None
+
+
+class ReportPlan(StrictModel):
+    report_id: str = Field(pattern=r"^pgr_[A-Za-z0-9_-]+$")
+    topic: str = Field(min_length=1)
+    scope: str | None = None
+    finding_claim_ids: list[str] = Field(default_factory=list)
+    bridges: list[ReportBridgePlan] = Field(default_factory=list)
+    open_questions: list[str] = Field(default_factory=list)
+
+
 class Finding(StrictModel):
     finding_id: str
+    claim_id: str
     statement: str
     epistemic_class: EpistemicClass
     confidence: Confidence
+    status: ClaimStatus
     evidence_ids: list[str]
     contradicting_evidence_ids: list[str] = Field(default_factory=list)
-    editorial_lenses: list[str] = Field(default_factory=list)
+    editorial_lenses: list[EditorialLens] = Field(default_factory=list)
+
+
+class SourceLedgerEntry(StrictModel):
+    evidence_id: str
+    source_class: SourceClass
+    source_url: AnyUrl
+    source_title: str | None = None
+    source_account: str | None = None
+    captured_at: datetime
+    published_at: datetime | None = None
+    supports_claim_ids: list[str] = Field(default_factory=list)
+    contradicts_claim_ids: list[str] = Field(default_factory=list)
+
+
+class ReportConflict(StrictModel):
+    conflict_id: str
+    description: str
+    claim_ids: list[str]
+    evidence_ids: list[str]
+
+
+class StrategicImplication(StrictModel):
+    bridge_id: str
+    claim_ids: list[str]
+    statement: str
+
+
+class EditorialOpportunity(StrictModel):
+    bridge_id: str
+    claim_ids: list[str]
+    editorial_format: EditorialFormat
+    editorial_lens: EditorialLens
+    concept: str
+    objective: str | None = None
+
+
+class AssetCandidate(StrictModel):
+    evidence_id: str
+    usage_basis: Literal[
+        "artist_authorization", "license", "permission", "research_reference", "unknown"
+    ]
+    purpose: str | None = None
 
 
 class ResearchReport(StrictModel):
@@ -214,7 +296,10 @@ class ResearchReport(StrictModel):
     generated_at: datetime
     scope: str | None = None
     findings: list[Finding]
-    conflicts: list[dict[str, Any]] = Field(default_factory=list)
-    asset_candidates: list[dict[str, Any]] = Field(default_factory=list)
+    conflicts: list[ReportConflict] = Field(default_factory=list)
+    source_ledger: list[SourceLedgerEntry] = Field(default_factory=list)
+    strategic_implications: list[StrategicImplication] = Field(default_factory=list)
+    editorial_opportunities: list[EditorialOpportunity] = Field(default_factory=list)
+    asset_candidates: list[AssetCandidate] = Field(default_factory=list)
     open_questions: list[str]
     evidence_ids: list[str]

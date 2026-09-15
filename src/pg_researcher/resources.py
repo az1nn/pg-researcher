@@ -9,6 +9,7 @@ RESOURCE_MAP = {
     "schemas/claim.schema.json": "resources/claim.schema.json",
     "schemas/evidence.schema.json": "resources/evidence.schema.json",
     "schemas/knowledge-index.schema.json": "resources/knowledge-index.schema.json",
+    "schemas/report-plan.schema.json": "resources/report-plan.schema.json",
     "schemas/research-report.schema.json": "resources/research-report.schema.json",
 }
 

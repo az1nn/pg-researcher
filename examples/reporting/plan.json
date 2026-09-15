@@ -1,0 +1,20 @@
+{
+  "report_id": "pgr_identity_seed",
+  "topic": "Prince' Gutt — official identity seed",
+  "scope": "Demonstrate the deterministic reporting pipeline from claim to editorial opportunity.",
+  "finding_claim_ids": ["pgc_official_x_identity"],
+  "bridges": [
+    {
+      "bridge_id": "pgb_identity_directors_note",
+      "claim_ids": ["pgc_official_x_identity"],
+      "implication": "A verified official account gives the project a first-party anchor for identity-led research and future source discovery.",
+      "editorial_format": "directors_note",
+      "editorial_lens": "identity",
+      "opportunity": "Use first-party identity signals to explain Prince' Gutt's authorship and visual decisions without relying on aggregator biography.",
+      "objective": "Strengthen recognizability and source authority."
+    }
+  ],
+  "open_questions": [
+    "Which other first-party profiles should be promoted from discovery-pending to canonical URLs?"
+  ]
+}

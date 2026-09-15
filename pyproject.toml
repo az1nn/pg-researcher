@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pg-researcher"
-version = "0.3.0"
+version = "0.4.0"
 description = "Evidence-first research skill and pipeline for Prince' Gutt"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -37,6 +37,7 @@ packages = ["src/pg_researcher"]
 "schemas/claim.schema.json" = "pg_researcher/resources/claim.schema.json"
 "schemas/evidence.schema.json" = "pg_researcher/resources/evidence.schema.json"
 "schemas/knowledge-index.schema.json" = "pg_researcher/resources/knowledge-index.schema.json"
+"schemas/report-plan.schema.json" = "pg_researcher/resources/report-plan.schema.json"
 "schemas/research-report.schema.json" = "pg_researcher/resources/research-report.schema.json"
 
 [tool.pytest.ini_options]

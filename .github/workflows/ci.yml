@@ -33,4 +33,5 @@ jobs:
           unzip -l dist/*.whl | grep 'pg_researcher/resources/claim.schema.json'
           unzip -l dist/*.whl | grep 'pg_researcher/resources/evidence.schema.json'
           unzip -l dist/*.whl | grep 'pg_researcher/resources/knowledge-index.schema.json'
+          unzip -l dist/*.whl | grep 'pg_researcher/resources/report-plan.schema.json'
           unzip -l dist/*.whl | grep 'pg_researcher/resources/research-report.schema.json'
