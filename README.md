@@ -2,11 +2,13 @@
 
 Research skill and evidence pipeline for **Prince' Gutt**.
 
-The repository turns public, authorized and verifiable information about Prince' Gutt into reusable research artifacts for **PG Influencer RESEARCH**. It is not a generic social-media scraper: every output must preserve provenance, distinguish fact from interpretation, and serve the artist's actual editorial universe.
+The repository turns public, authorized and verifiable information into reusable Prince' Gutt research artifacts. Every output must preserve provenance, distinguish fact from interpretation, and serve the artist's actual editorial universe.
 
-## Core doctrine
+## Research domains
 
-Prince' Gutt is treated as an artist-platform: music, production, image, territory, fashion, community and future IP. Research should strengthen recognizability and repertoire rather than fill a calendar.
+### PG Influencer RESEARCH
+
+Public-source research around Prince' Gutt as an artist-platform: music, production, image, territory, fashion, community and future IP.
 
 Primary editorial formats:
 
@@ -15,6 +17,18 @@ Primary editorial formats:
 - **O Corre por Trás** — process, discipline and backstage.
 - **Director's Note** — aesthetic decisions with authorship and authority.
 - **Prince Responde** — community and live feedback loops.
+
+### PG RELIGION RESEARCH
+
+Evidence-backed research and publishing across religious, philosophical, esoteric and popular-wisdom sources, with Hermetic and Pythagorean traditions as primary comparative lenses.
+
+The religion domain is universalist in method but must not flatten traditions into false equivalence. Source statements, historical context, tradition claims, scholarly interpretations, comparative parallels and Prince' Gutt editorial synthesis remain explicitly distinct.
+
+See `docs/RELIGION_RESEARCH.md`, `config/religion-corpus.yaml` and `specs/006-religion-research-foundation.md`.
+
+## Core doctrine
+
+Prince' Gutt is treated as an artist-platform. Research should strengthen recognizability, repertoire and original IP rather than fill a calendar or mechanically rewrite source material.
 
 ## Research contract
 
@@ -25,9 +39,9 @@ Every material claim should carry:
 3. capture timestamp;
 4. evidence excerpt or structured fact;
 5. confidence;
-6. explicit separation between `fact`, `inference` and `editorial_hypothesis`.
+6. an explicit claim/interpretation type appropriate to its research domain.
 
-Official/first-party sources outrank aggregators. Conflicting claims are preserved and flagged instead of silently resolved.
+Official/primary and authoritative sources outrank aggregators. Conflicting claims are preserved and flagged instead of silently resolved.
 
 ## Install for development
 
@@ -69,9 +83,9 @@ pg-researcher report build \
 pg-researcher report validate data/reports/identity.json
 ```
 
-Collectors normalize provenance into typed evidence; they do not synthesize claims. Claims are explicit artifacts. The knowledge index canonicalizes duplicate evidence, preserves conflicts and projects timeline/catalog views without silently deciding which conflicting value is true.
+Collectors normalize provenance into typed evidence; they do not synthesize claims. Claims are explicit artifacts. The knowledge index canonicalizes duplicate evidence, preserves conflicts and projects views without silently deciding which conflicting value is true.
 
-Reporting consumes that knowledge layer. Findings are projected from claims; strategic implications and editorial opportunities only enter through an explicit `ReportPlan` anchored to claim IDs.
+Reporting consumes that knowledge layer. Findings are projected from claims; strategic/editorial synthesis only enters through explicit, traceable planning artifacts.
 
 ## Repository map
 
@@ -81,11 +95,13 @@ Reporting consumes that knowledge layer. Findings are projected from claims; str
 ├── SKILL.md
 ├── config/
 │   ├── fetch-policy.yaml
+│   ├── religion-corpus.yaml
 │   └── sources.yaml
 ├── docs/
 │   ├── ARCHITECTURE.md
 │   ├── COLLECTORS.md
 │   ├── KNOWLEDGE_INDEX.md
+│   ├── RELIGION_RESEARCH.md
 │   ├── REPORTING.md
 │   ├── RESEARCH_POLICY.md
 │   └── RIGHTS_AND_ASSETS.md
@@ -105,7 +121,8 @@ Reporting consumes that knowledge layer. Findings are projected from claims; str
 │   ├── 002-executable-core.md
 │   ├── 003-collectors.md
 │   ├── 004-knowledge-index.md
-│   └── 005-reporting.md
+│   ├── 005-reporting.md
+│   └── 006-religion-research-foundation.md
 ├── src/pg_researcher/
 └── tests/
 ```
@@ -125,4 +142,7 @@ python -m build --wheel
 3. **Collectors** — controlled web/DSP/social acquisition, cache and fetch policy. ✅
 4. **Knowledge index** — explicit claims, evidence dedupe, conflicts, catalog/timeline indexes. ✅
 5. **Reporting** — briefs, source ledger and explicit editorial-opportunity bridges. ✅
-6. **Assets** — provenance manifest, authorized acquisition/derivatives and publication gates.
+6. **PG Religion Research foundation** — comparative doctrine, source/claim taxonomy, rights/publication rules and e-book contract. ✅
+7. **Assets** — provenance manifest, authorized acquisition/derivatives and publication gates.
+8. **Religion corpus runtime** — typed models/validation for religious-source, rights, parallel and manuscript artifacts.
+9. **E-book production** — deterministic manuscript/package generation, PDF/ePub export and publication QA.
