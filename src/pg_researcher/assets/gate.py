@@ -2,7 +2,11 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from pg_researcher.assets.manifest import AssetManifestError, validate_asset_structure, verify_asset_record
+from pg_researcher.assets.manifest import (
+    AssetManifestError,
+    validate_asset_structure,
+    verify_asset_record,
+)
 from pg_researcher.assets.models import (
     AssetIdentityStatus,
     AssetManifest,
@@ -53,7 +57,14 @@ def evaluate_asset(record: AssetRecord, root: Path) -> PublicationDecision:
     if record.identity_status is AssetIdentityStatus.VERIFIED:
         checks.append(_check("identity", True, CheckSeverity.BLOCK, "asset identity is verified"))
     elif record.identity_status is AssetIdentityStatus.MISMATCH:
-        checks.append(_check("identity", False, CheckSeverity.BLOCK, "asset identity is a mismatch"))
+        checks.append(
+            _check(
+                "identity",
+                False,
+                CheckSeverity.BLOCK,
+                "asset identity is a mismatch",
+            )
+        )
     else:
         checks.append(
             _check(
@@ -163,7 +174,14 @@ def evaluate_asset(record: AssetRecord, root: Path) -> PublicationDecision:
             )
         )
     else:
-        checks.append(_check("attribution", True, CheckSeverity.BLOCK, "no attribution is required"))
+        checks.append(
+            _check(
+                "attribution",
+                True,
+                CheckSeverity.BLOCK,
+                "no attribution is required",
+            )
+        )
 
     checks.append(
         _check(
