@@ -88,7 +88,10 @@ class AssetAcquirer:
 
                 media_type = response.headers.get("content-type", "").split(";", 1)[0].lower()
                 if media_type not in self.policy.allowed_content_types:
-                    raise AssetAcquireError(f"unsupported asset content type: {media_type or '<missing>'}")
+                    rendered_type = media_type or "<missing>"
+                    raise AssetAcquireError(
+                        f"unsupported asset content type: {rendered_type}"
+                    )
 
                 body = response.content
                 if len(body) > self.policy.max_response_bytes:
