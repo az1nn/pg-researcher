@@ -1,0 +1,87 @@
+version: 1
+project:
+  id: pg_religion_research
+  display_name: "PG RELIGION RESEARCH"
+  publisher_identity: "Prince' Gutt"
+  method: universalist_comparative
+  primary_lenses:
+    - hermetic
+    - pythagorean
+
+claim_types:
+  - source_fact
+  - historical_context
+  - tradition_claim
+  - scholarly_interpretation
+  - comparative_parallel
+  - pg_editorial_synthesis
+
+source_classes:
+  primary_canonical:
+    tier: 1
+    description: "Primary, canonical, manuscript, historical or verified public-domain source."
+  academic_critical:
+    tier: 2
+    description: "Peer-reviewed or reputable critical/historical scholarship."
+  tradition_commentary:
+    tier: 3
+    description: "Tradition-internal theological, mystical or initiatory commentary."
+  modern_esoteric:
+    tier: 4
+    description: "Modern occult, esoteric, perennialist or initiatory author/source."
+  popular_oral:
+    tier: 5
+    description: "Folklore, proverb, oral tradition, community or popular-wisdom source."
+
+rights_statuses:
+  - public_domain_text
+  - licensed_or_authorized
+  - quotation_only
+  - research_only
+  - unknown
+
+publication_rules:
+  allow_unknown_rights: false
+  distinguish_ancient_work_from_modern_translation: true
+  protected_sources_must_be_transformative: true
+  require_source_ledger: true
+  require_rights_ledger: true
+  require_claim_typing: true
+  preserve_tradition_differences: true
+  similarity_does_not_prove_historical_dependence: true
+
+visual_identity:
+  inherits: prince_gutt_royal_street
+  palette:
+    - deep_black
+    - burgundy
+    - aged_gold
+    - warm_paper
+  materials:
+    - film_grain
+    - paper
+    - metal
+    - wood
+    - real_light
+  green_usage: signature_accent_only
+  avoid:
+    - generic_new_age_neon
+    - plastic_gold
+    - random_zodiac_collage
+    - fake_manuscript
+    - excessive_sacred_geometry
+    - generic_ai_occultism
+
+seed_sources:
+  - id: youtube_kickoff_nkf2v9jwebw
+    class: modern_esoteric
+    platform: youtube
+    canonical_url: "https://youtu.be/NKF2v9jWeBw"
+    status: discovery_seed
+    capture_required:
+      - title
+      - channel
+      - published_at
+      - transcript_or_structured_notes
+      - rights_status
+      - evidence_excerpt
