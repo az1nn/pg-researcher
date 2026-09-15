@@ -25,7 +25,12 @@ from pg_researcher.assets.policy import AssetFetchPolicy
 NOW = datetime(2026, 9, 15, 11, 30, tzinfo=UTC)
 
 
-def _record(root: Path, *, rights_class: RightsClass = RightsClass.A, usage_basis: UsageBasis = UsageBasis.ARTIST_AUTHORIZATION):
+def _record(
+    root: Path,
+    *,
+    rights_class: RightsClass = RightsClass.A,
+    usage_basis: UsageBasis = UsageBasis.ARTIST_AUTHORIZATION,
+):
     source = root / "assets" / "portrait.jpg"
     source.parent.mkdir(parents=True, exist_ok=True)
     source.write_bytes(b"artist-owned-image")
@@ -54,7 +59,10 @@ def test_tampered_file_blocks_publication(tmp_path: Path) -> None:
     (tmp_path / record.files[0].path).write_bytes(b"tampered")
     decision = evaluate_asset(record, tmp_path)
     assert decision.status is PublicationStatus.BLOCKED
-    assert any(check.code.startswith("integrity:") and not check.passed for check in decision.checks)
+    assert any(
+        check.code.startswith("integrity:") and not check.passed
+        for check in decision.checks
+    )
 
 
 def test_unknown_usage_basis_blocks_publication(tmp_path: Path) -> None:
