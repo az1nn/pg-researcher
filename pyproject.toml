@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pg-researcher"
-version = "0.4.0"
+version = "0.5.0"
 description = "Evidence-first research skill and pipeline for Prince' Gutt"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -27,6 +27,7 @@ dev = [
 
 [project.scripts]
 pg-researcher = "pg_researcher.cli:main"
+pg-religion = "pg_researcher.religion.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/pg_researcher"]
@@ -34,11 +35,16 @@ packages = ["src/pg_researcher"]
 [tool.hatch.build.targets.wheel.force-include]
 "config/fetch-policy.yaml" = "pg_researcher/resources/fetch-policy.yaml"
 "config/sources.yaml" = "pg_researcher/resources/sources.yaml"
+"config/religion-corpus.yaml" = "pg_researcher/resources/religion-corpus.yaml"
 "schemas/claim.schema.json" = "pg_researcher/resources/claim.schema.json"
 "schemas/evidence.schema.json" = "pg_researcher/resources/evidence.schema.json"
 "schemas/knowledge-index.schema.json" = "pg_researcher/resources/knowledge-index.schema.json"
 "schemas/report-plan.schema.json" = "pg_researcher/resources/report-plan.schema.json"
 "schemas/research-report.schema.json" = "pg_researcher/resources/research-report.schema.json"
+"schemas/religion-source.schema.json" = "pg_researcher/resources/religion-source.schema.json"
+"schemas/religion-rights.schema.json" = "pg_researcher/resources/religion-rights.schema.json"
+"schemas/religion-parallel.schema.json" = "pg_researcher/resources/religion-parallel.schema.json"
+"schemas/religion-manuscript.schema.json" = "pg_researcher/resources/religion-manuscript.schema.json"
 
 [tool.pytest.ini_options]
 addopts = "-q"
