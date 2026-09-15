@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pg-researcher.local/schemas/religion-manuscript.schema.json",
+  "title": "PG Religion Research Manuscript",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["manuscript_id", "title", "thesis", "status", "source_ids", "sections", "source_ledger_complete", "rights_ledger_complete", "publication_ready"],
+  "properties": {
+    "manuscript_id": {"type": "string", "pattern": "^pgrm_[A-Za-z0-9_-]+$"},
+    "title": {"type": "string", "minLength": 1},
+    "thesis": {"type": "string", "minLength": 1},
+    "status": {"type": "string", "enum": ["outline", "draft", "review", "approved"]},
+    "source_ids": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^pgrs_[A-Za-z0-9_-]+$"}},
+    "sections": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["section_id", "title", "kind", "purpose", "claim_ids", "parallel_ids"],
+        "properties": {
+          "section_id": {"type": "string", "pattern": "^sec_[A-Za-z0-9_-]+$"},
+          "title": {"type": "string", "minLength": 1},
+          "kind": {"type": "string", "enum": ["source", "context", "interpretation", "correspondence", "pg_editorial_synthesis", "practice", "notes"]},
+          "purpose": {"type": "string", "minLength": 1},
+          "claim_ids": {"type": "array", "items": {"type": "string"}},
+          "parallel_ids": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "source_ledger_complete": {"type": "boolean"},
+    "rights_ledger_complete": {"type": "boolean"},
+    "publication_ready": {"type": "boolean"},
+    "notes": {"type": ["string", "null"]}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"publication_ready": {"const": true}}, "required": ["publication_ready"]},
+      "then": {
+        "properties": {
+          "source_ledger_complete": {"const": true},
+          "rights_ledger_complete": {"const": true}
+        }
+      }
+    }
+  ]
+}
