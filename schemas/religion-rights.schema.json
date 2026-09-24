@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pg-researcher.local/schemas/religion-rights.schema.json",
+  "title": "PG Religion Research Rights Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["rights_id", "source_id", "rights_status", "basis", "quote_policy", "publication_allowed"],
+  "properties": {
+    "rights_id": {"type": "string", "pattern": "^pgrr_[A-Za-z0-9_-]+$"},
+    "source_id": {"type": "string", "pattern": "^pgrs_[A-Za-z0-9_-]+$"},
+    "rights_status": {
+      "type": "string",
+      "enum": ["public_domain_text", "licensed_or_authorized", "quotation_only", "research_only", "unknown"]
+    },
+    "basis": {"type": "string", "minLength": 1},
+    "quote_policy": {
+      "type": "string",
+      "enum": ["public_domain_full_text", "authorized_full_text", "brief_quotation", "research_only", "blocked"]
+    },
+    "publication_allowed": {"type": "boolean"},
+    "jurisdiction": {"type": ["string", "null"]},
+    "verified_at": {"type": ["string", "null"], "format": "date-time"},
+    "notes": {"type": ["string", "null"]}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"rights_status": {"enum": ["research_only", "unknown"]}}, "required": ["rights_status"]},
+      "then": {"properties": {"publication_allowed": {"const": false}}}
+    },
+    {
+      "if": {"properties": {"rights_status": {"const": "unknown"}}, "required": ["rights_status"]},
+      "then": {"properties": {"quote_policy": {"const": "blocked"}}}
+    }
+  ]
+}
